@@ -1,8 +1,10 @@
 # Some stuff before p10k instant prompt, because it can print to console
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+if [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]]; then
+  export SDKMAN_DIR="$HOME/.sdkman"
+  source "$HOME/.sdkman/bin/sdkman-init.sh"
+fi
 
-# Download dependencies, if not there yet.
+# Download dependencies, if not there yet. Downloads happen before p10k instant prompt.
 # znap from https://github.com/marlonrichert/zsh-snap
 [[ -r ~/.zsh/zsh-snap/znap.zsh ]] || git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.zsh/zsh-snap
 
@@ -26,49 +28,24 @@ zstyle ':completion:*:*:make:*' tag-order 'targets'
 source ~/Git/zsh-snap/znap.zsh  # Start Znap
 
 znap source romkatv/powerlevel10k
+znap source zdharma-continuum/fast-syntax-highlighting
 znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-completions
-znap source zdharma-continuum/fast-syntax-highlighting
-znap source ohmyzsh/ohmyzsh lib/key-bindings.zsh plugins/gcloud
+znap source zsh-users/zsh-history-substring-search
+# gcloud plugin won't be harmful if gcloud isn't present
+znap source ohmyzsh/ohmyzsh plugins/gcloud
 
-# Taken from ohmyzsh/ohmyzsh/lib/key-bindings.zsh
-if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
-  # Make sure that the terminal is in application mode when zle is active, since
-  # only then values from $terminfo are valid
-  function zle-line-init() {
-    echoti smkx
-  }
-  function zle-line-finish() {
-    echoti rmkx
-  }
-  zle -N zle-line-init
-  zle -N zle-line-finish
-fi
-if [[ "${terminfo[kpp]}" != "" ]]; then
-  # [PageUp] - Up a line of history
-  bindkey "${terminfo[kpp]}" up-line-or-history
-fi
-if [[ "${terminfo[knp]}" != "" ]]; then
-  # [PageDown] - Down a line of history
-  bindkey "${terminfo[knp]}" down-line-or-history
-fi
-if [[ "${terminfo[kcuu1]}" != "" ]]; then
-  # start typing + [Up-Arrow] - fuzzy find history forward
-  autoload -U up-line-or-beginning-search
-  zle -N up-line-or-beginning-search
-  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
-fi
-if [[ "${terminfo[kcud1]}" != "" ]]; then
-  # start typing + [Down-Arrow] - fuzzy find history backward
-  autoload -U down-line-or-beginning-search
-  zle -N down-line-or-beginning-search
-  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
-fi
+# from zsh-users/zsh-history-substring-search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
-[[ "$(which kubectl)" ]] && source <(kubectl completion zsh)
-alias k="kubectl"
-alias kcx="kubectx"
-alias kns="kubens"
+if [[ -n "$(which kubectl)" ]]; then
+  alias k="kubectl"
+  alias kcx="kubectx"
+  alias kns="kubens"
+  source <(kubectl completion zsh)
+  compdef __start_kubectl k
+fi
 
 alias ls='gls --color=auto --group-directories-first'
 alias ll='ls -laF'
