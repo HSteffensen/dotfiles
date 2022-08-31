@@ -34,6 +34,7 @@ znap source zsh-users/zsh-completions
 znap source zsh-users/zsh-history-substring-search
 # gcloud plugin won't be harmful if gcloud isn't present
 znap source ohmyzsh/ohmyzsh plugins/gcloud
+znap source lukechilds/zsh-nvm
 
 # from zsh-users/zsh-history-substring-search
 bindkey '^[[A' history-substring-search-up
