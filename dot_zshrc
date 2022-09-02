@@ -52,7 +52,11 @@ if (( $+commands[rustup] )); then
   znap fpath _cargo 'rustup completions zsh cargo'
 fi
 
-alias ls='ls --color=auto --group-directories-first'
+if (( $+commands[gls] )); then
+  alias ls='gls --color=auto --group-directories-first'
+else
+  alias ls='ls --color=auto --group-directories-first'
+fi
 alias ll='ls -laF'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -60,3 +64,7 @@ alias ll='ls -laF'
 
 path+=("$HOME/bin")
 export PATH
+fpath+=("~/.zsh/my_functions")
+export fpath
+autoload -Uz ~/.zsh/my_functions/*(.:t)
+
