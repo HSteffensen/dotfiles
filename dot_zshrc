@@ -52,6 +52,13 @@ if (( $+commands[rustup] )); then
   znap fpath _cargo 'rustup completions zsh cargo'
 fi
 
+if (( $+commands[pnpm] )); then
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+  path+=("$PNPM_HOME")
+  pnpm install-completion zsh &> /dev/null
+  [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+fi
+
 if (( $+commands[gls] )); then
   alias ls='gls --color=auto --group-directories-first'
 else
@@ -67,4 +74,3 @@ export PATH
 fpath+=("~/.zsh/my_functions")
 export fpath
 autoload -Uz ~/.zsh/my_functions/*(.:t)
-
