@@ -56,6 +56,8 @@ if (( $+commands[pnpm] )); then
   export PNPM_HOME="$HOME/.local/share/pnpm"
   path+=("$PNPM_HOME")
   pnpm install-completion zsh &> /dev/null
+  # pnpm install-completion checks for the following line and adds it if not found
+  # so if the line is changed at all it will edit the file undesiredly
   [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 fi
 
@@ -71,6 +73,11 @@ alias ll='ls -laF'
 
 path+=("$HOME/bin")
 export PATH
-fpath+=("~/.zsh/my_functions")
-export fpath
-autoload -Uz ~/.zsh/my_functions/*(.:t)
+export EDITOR=vim
+export VISUAL="$EDITOR"
+
+if [[ -d "~/.zsh/my_functions" ]]; then
+  fpath+=("~/.zsh/my_functions")
+  export fpath
+  autoload -Uz ~/.zsh/my_functions/*(.:t)
+fi
