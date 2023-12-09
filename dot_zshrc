@@ -17,6 +17,7 @@ fi
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+setopt HIST_IGNORE_ALL_DUPS
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # https://geoff.greer.fm/lscolors/ LSCOLORS tool
 # these colors were the system defaults when I got my work mac
@@ -29,18 +30,18 @@ source ~/Git/zsh-snap/znap.zsh # Start Znap
 
 znap source romkatv/powerlevel10k
 znap source zdharma-continuum/fast-syntax-highlighting
-znap source zsh-users/zsh-autosuggestions
+znap source zsh-users/zsh-autosuggestions # kinda overlaps with marlonrichert/zsh-autocomplete, maybe remove?
 znap source zsh-users/zsh-completions
-znap source zsh-users/zsh-history-substring-search
+znap source marlonrichert/zsh-autocomplete
 # gcloud plugin won't be harmful if gcloud isn't present
 znap source ohmyzsh/ohmyzsh plugins/gcloud
 znap source lukechilds/zsh-nvm
 
-# from zsh-users/zsh-history-substring-search
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
-HISTORY_SUBSTRING_SEARCH_FUZZY='1'
-setopt HIST_IGNORE_ALL_DUPS
+# different history plugin option, replaced by marlonrichert/zsh-autocomplete
+# znap source zsh-users/zsh-history-substring-search
+# bindkey "$terminfo[kcuu1]" history-substring-search-up
+# bindkey "$terminfo[kcud1]" history-substring-search-down
+# HISTORY_SUBSTRING_SEARCH_FUZZY='1'
 
 if (( $+commands[kubectl] )); then
   alias k="kubectl"
