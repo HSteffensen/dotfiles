@@ -37,8 +37,10 @@ znap source ohmyzsh/ohmyzsh plugins/gcloud
 znap source lukechilds/zsh-nvm
 
 # from zsh-users/zsh-history-substring-search
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+HISTORY_SUBSTRING_SEARCH_FUZZY='1'
+setopt HIST_IGNORE_ALL_DUPS
 
 if (( $+commands[kubectl] )); then
   alias k="kubectl"
