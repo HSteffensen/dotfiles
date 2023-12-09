@@ -8,6 +8,12 @@ fi
 # znap from https://github.com/marlonrichert/zsh-snap
 [[ -r ~/Git/zsh-snap/znap.zsh ]] || git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/Git/zsh-snap
 
+# fzf from https://github.com/junegunn/fzf.git
+if [[ ! -r ~/.fzf.zsh ]]; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --key-bindings --completion --no-update-rc
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -17,26 +23,18 @@ fi
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_ALL_DUPS # Delete old recorded entry if new entry is a duplicate.
+setopt INC_APPEND_HISTORY # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY # Share history between all sessions.
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # https://geoff.greer.fm/lscolors/ LSCOLORS tool
 # these colors were the system defaults when I got my work mac
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 export LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 
-zstyle ':completion:*:*:make:*' tag-order 'targets'
-
 source ~/Git/zsh-snap/znap.zsh # Start Znap
 
-znap source romkatv/powerlevel10k
-znap source zdharma-continuum/fast-syntax-highlighting
-znap source zsh-users/zsh-autosuggestions # kinda overlaps with marlonrichert/zsh-autocomplete, maybe remove?
-znap source zsh-users/zsh-completions
-znap source marlonrichert/zsh-autocomplete
-# gcloud plugin won't be harmful if gcloud isn't present
-znap source ohmyzsh/ohmyzsh plugins/gcloud
-znap source lukechilds/zsh-nvm
-
+bindkey "$terminfo[kcuu1]" fzf-history-widget
 # different history plugin option, replaced by marlonrichert/zsh-autocomplete
 # znap source zsh-users/zsh-history-substring-search
 # bindkey "$terminfo[kcuu1]" history-substring-search-up
@@ -70,6 +68,26 @@ else
   alias ls='ls --color=auto --group-directories-first'
 fi
 alias ll='ls -laF'
+
+[[ ! -r ~/.fzf.zsh ]] || source ~/.fzf.zsh
+
+znap source romkatv/powerlevel10k
+znap source zsh-users/zsh-completions
+znap source ohmyzsh/ohmyzsh lib/completion.zsh
+# znap source marlonrichert/zsh-autocomplete # replaced by fzf-tab
+# gcloud plugin won't be harmful if gcloud isn't present
+znap source ohmyzsh/ohmyzsh plugins/gcloud
+znap source lukechilds/zsh-nvm
+# NOTE: fzf-tab needs to be loaded after compinit, but before plugins which will wrap widgets,
+# such as zsh-autosuggestions or fast-syntax-highlighting!!
+znap source Aloxaf/fzf-tab
+znap source zdharma-continuum/fast-syntax-highlighting
+znap source zsh-users/zsh-autosuggestions # kinda overlaps with marlonrichert/zsh-autocomplete or Aloxaf/fzf-tab, maybe remove?
+
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# set make completion to Makefile targets
+zstyle ':completion:*:*:make:*' tag-order 'targets'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
