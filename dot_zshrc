@@ -34,6 +34,8 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # these colors were the system defaults when I got my work mac
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 export LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+export EDITOR=vim
+export VISUAL="$EDITOR"
 
 source ~/Git/zsh-snap/znap.zsh # Start Znap
 
@@ -79,13 +81,18 @@ znap source lukechilds/zsh-nvm
 znap source Aloxaf/fzf-tab
 znap source zdharma-continuum/fast-syntax-highlighting
 znap source zsh-users/zsh-autosuggestions # kinda overlaps with marlonrichert/zsh-autocomplete or Aloxaf/fzf-tab, maybe remove?
+# history plugin, possible to replace with fzf
+znap source zsh-users/zsh-history-substring-search
 
-bindkey "$terminfo[kcuu1]" fzf-history-widget
-# different history plugin option, replaced by marlonrichert/zsh-autocomplete, which was then replaced by fzf
-# znap source zsh-users/zsh-history-substring-search
-# bindkey "$terminfo[kcuu1]" history-substring-search-up
-# bindkey "$terminfo[kcud1]" history-substring-search-down
-# HISTORY_SUBSTRING_SEARCH_FUZZY='1'
+# binding for fzf as history plugin, but the other one is kinda smoother
+# bindkey "$terminfo[kcuu1]" fzf-history-widget
+# bindkey '^[[A' fzf-history-widget
+# binding for history plugin zsh-users/zsh-history-substring-search
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+HISTORY_SUBSTRING_SEARCH_FUZZY='1'
 
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -97,11 +104,3 @@ zstyle ':completion:*:*:make:*' tag-order 'targets'
 
 path+=("$HOME/bin")
 export PATH
-export EDITOR=vim
-export VISUAL="$EDITOR"
-
-if [[ -d "~/.zsh/my_functions" ]]; then
-  fpath+=("~/.zsh/my_functions")
-  export fpath
-  autoload -Uz ~/.zsh/my_functions/*(.:t)
-fi
