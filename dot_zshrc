@@ -79,6 +79,7 @@ znap source zsh-users/zsh-completions
 znap source ohmyzsh/ohmyzsh lib/completion.zsh
 # gcloud plugin won't be harmful if gcloud isn't present
 znap source ohmyzsh/ohmyzsh plugins/gcloud
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 znap source lukechilds/zsh-nvm
 # znap source marlonrichert/zsh-autocomplete # replaced by fzf-tab, might switch back again later
 # NOTE: fzf-tab needs to be loaded after compinit, but before plugins which will wrap widgets,
