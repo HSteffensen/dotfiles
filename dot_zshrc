@@ -44,6 +44,12 @@ export PATH
 
 source ~/Git/zsh-snap/znap.zsh # Start Znap
 
+if (( $+commands[mise] )); then
+  eval "$(mise activate zsh)"
+  eval "$(mise hook-env -s zsh)"
+  znap fpath _mise 'mise completion zsh'
+fi
+
 if (( $+commands[kubectl] )); then
   alias k="kubectl"
   alias kcx="kubectx"
