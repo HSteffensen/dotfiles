@@ -39,30 +39,30 @@ path+=("$HOME/bin")
 
 source ~/Git/zsh-snap/znap.zsh # Start Znap
 
-if [[ $+commands[brew] ]] then
+if [[ -n "$(command -v brew)" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv zsh)"
   fpath+=("$(brew --prefix)/share/zsh/site-functions")
 fi
 
-if (( $+commands[mise] )); then
+if [[ -n "$(command -v mise)" ]]; then
   eval "$(mise activate zsh)"
   eval "$(mise hook-env -s zsh)"
   znap fpath _mise 'mise completion zsh'
 fi
 
-if (( $+commands[kubectl] )); then
+if [[ -n "$(command -v kubectl)" ]]; then
   alias k="kubectl"
   alias kcx="kubectx"
   alias kns="kubens"
   znap fpath _kubectl 'kubectl completion zsh'
 fi
 
-if (( $+commands[rustup] )); then
+if [[ -n "$(command -v rustup)" ]]; then
   znap fpath _rustup 'rustup completions zsh'
   znap fpath _cargo 'rustup completions zsh cargo'
 fi
 
-if (( $+commands[pnpm] )); then
+if [[ -n "$(command -v pnpm)" ]]; then
   export PNPM_HOME="$HOME/.local/share/pnpm"
   path+=("$PNPM_HOME")
   pnpm install-completion zsh &> /dev/null
@@ -71,7 +71,7 @@ if (( $+commands[pnpm] )); then
   [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 fi
 
-if (( $+commands[gls] )); then
+if [[ -n "$(command -v gls)" ]]; then
   alias ls='gls --color=auto --group-directories-first'
 else
   alias ls='ls --color=auto --group-directories-first'
