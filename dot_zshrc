@@ -36,9 +36,12 @@ export VISUAL="$EDITOR"
 path+=("$HOME/bin")
 # rancher desktop for Mac, has kubectl etc.
 [[ ! -d "$HOME/.rd/bin" ]] || PATH="$HOME/.rd/bin:$PATH"
-export PATH
 
 source ~/Git/zsh-snap/znap.zsh # Start Znap
+
+if [[ -f "/opt/homebrew/bin/brew" ]] then
+  eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+fi
 
 if (( $+commands[mise] )); then
   eval "$(mise activate zsh)"
