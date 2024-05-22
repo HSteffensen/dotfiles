@@ -1,8 +1,4 @@
 # Some stuff before p10k instant prompt, because it can print to console
-if [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]]; then
-  export SDKMAN_DIR="$HOME/.sdkman"
-  source "$HOME/.sdkman/bin/sdkman-init.sh"
-fi
 
 # Download dependencies, if not there yet. Downloads happen before p10k instant prompt.
 # znap from https://github.com/marlonrichert/zsh-snap
