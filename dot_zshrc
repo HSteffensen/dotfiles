@@ -39,8 +39,9 @@ path+=("$HOME/bin")
 
 source ~/Git/zsh-snap/znap.zsh # Start Znap
 
-if [[ -f "/opt/homebrew/bin/brew" ]] then
+if [[ $+commands[brew] ]] then
   eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+  fpath+=("$(brew --prefix)/share/zsh/site-functions")
 fi
 
 if (( $+commands[mise] )); then
