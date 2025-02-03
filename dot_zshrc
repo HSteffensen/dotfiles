@@ -72,11 +72,12 @@ if [[ -n "$(command -v pnpm)" ]]; then
 fi
 
 if [[ -n "$(command -v gls)" ]]; then
+  # gnu coreutils on MacOS, via `brew install coreutils`
   alias ls='gls --color=auto --group-directories-first'
 else
   alias ls='ls --color=auto --group-directories-first'
 fi
-alias ll='ls -laF'
+alias ll='ls -lahF'
 
 [[ ! -r ~/.fzf.zsh ]] || source ~/.fzf.zsh
 
